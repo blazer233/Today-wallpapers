@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Content from "./Content";
+import { executablePath } from "../../package.json";
 import { SyncOutlined } from "@ant-design/icons";
 import { Spin, message } from "antd";
 const {
@@ -28,8 +29,7 @@ const App = () => {
   const [panding, setPanding] = useState("");
   const config = {
     headless,
-    executablePath:
-      "C:\\Users\\darylsong\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe",
+    executablePath,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   };
   const _init = async (_ = false) => {

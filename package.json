@@ -4,6 +4,7 @@
   "private": true,
   "main": "public/electron.js",
   "homepage": ".",
+  "executablePath": "C:\\Users\\darylsong\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe",
   "devDependencies": {
     "electron": "^11.2.2",
     "electron-builder": "^22.9.1",
