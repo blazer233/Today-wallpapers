@@ -29,10 +29,13 @@ const updatePage = (atr, data) => {
   result.children = data;
   store.set("Database", res);
 };
+const expDown = () =>
+  expHomePage("title").filter(({ children }) => children.length);
 module.exports = {
   savHomePage,
   expHomePage,
   destroyPage,
   updatePage,
   expHomeOne,
+  expDown,
 };

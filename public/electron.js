@@ -16,6 +16,7 @@ const {
   updatePage,
   expHomeOne,
   destroyPage,
+  expDown,
 } = require("./Database");
 const dayjs = require("dayjs");
 const isDev = process.env.NODE_ENV !== "development";
@@ -54,17 +55,16 @@ const Hand = async () => {
     destroyPage();
     e.sender.send("init-delete-reply", true);
   });
-  ipcMain.on("init-homepage", e => {
+  ipcMain.on("init-homepage", (e, _) => {
     let ctx = expHomePage() || [];
-    console.log(ctx.length);
     if (ctx.length) {
       log.info("查询到数据库数据");
       let { time } = expHomeOne("time", true);
       let isday = dayjs().isSame(time, "day");
       log.info(time, "数据库时间", isday, "同一天");
-      e.sender.send( 
+      e.sender.send(
         "init-homepage-reply",
-        isday ? expHomePage("title") : false
+        isday && _ ? expDown() : isday ? expHomePage("title") : false
       );
     } else {
       log.info("未查到数据库数据");
@@ -74,9 +74,9 @@ const Hand = async () => {
   ipcMain.on("init-day-data", (e, { data }) => {
     let add = savHomePage(data);
     e.sender.send("init-day-data-reply", {
-      dataArry: expHomePage("title"),
+      dataArry: expHomePage("title"), 
       add,
-    });
+    }); 
   });
   ipcMain.on("init-collect", (e, href) => {
     console.log(href);
@@ -100,7 +100,7 @@ const Hand = async () => {
       directory: currentPath,
       openFolderWhenDone: false,
     });
-    new Notification({ 
+    new Notification({
       title: "hi~",
       body: "您已设置新桌面",
       silent: true,
@@ -110,9 +110,9 @@ const Hand = async () => {
 
     event.sender.send("download-reply", dl.getSavePath());
   });
-  mainWindow.on("closed", () => { 
+  mainWindow.on("closed", () => {
     mainWindow = null;
-    app.quit(); //应用退出的时候触发 
+    app.quit(); //应用退出的时候触发
   });
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();

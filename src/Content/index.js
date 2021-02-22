@@ -19,6 +19,7 @@ const ipcasync = async (name, obj = null) => {
 };
 const App = () => {
   const [result, setResult] = useState([]);
+  const [isdown, setdown] = useState(false);
   const [details, setDetail] = useState([]);
   const [Modals, setModal] = useState("");
   const [screenSize, setScreenSize] = useState({});
@@ -28,14 +29,13 @@ const App = () => {
   const config = {
     headless,
     executablePath:
-      "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+      "C:\\Users\\darylsong\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   };
-  const _init = async () => {
+  const _init = async (_ = false) => {
     setPanding("努力加载中...第一次加载时间会比较长~~~");
-    let res = await ipcasync("init-homepage");
-    let resScreen = await ipcasync("init-imgsize");
-    setScreenSize(resScreen);
+    let res = await ipcasync("init-homepage", _);
+    setScreenSize(await ipcasync("init-imgsize"));
     res ? setResult(res) : newFind();
     setPanding(false);
   };
@@ -57,7 +57,7 @@ const App = () => {
     browser.close();
     return arr;
   };
-  const getPages = async (url, screen = "1920x1080") => {
+  const getPages = async (url, screen) => {
     const browser = await puppeteer.launch(config);
     const page = await browser.newPage();
     await page.goto(url);
@@ -77,26 +77,27 @@ const App = () => {
       i && setPanding(`总共爬取 ${allPage} 张,当前爬取第 ${i} 张`);
       await page.goto(arr[i].href);
       await page.waitForSelector(`#tagfbl`, { visible: true });
-      const hrefItems = await page.evaluate(el => {
-        return document.querySelector(el)
-          ? document.querySelector(el).getAttribute("href")
-          : document.querySelector(`a[id="1920x1080"]`)
+      const hrefItems = await page.evaluate(
+        el =>
+          document.querySelector(el)
+            ? document.querySelector(el).getAttribute("href")
+            : document.querySelector(`a[id="1920x1080"]`)
             ? document.querySelector(`a[id="1920x1080"]`).getAttribute("href")
-            : document.querySelector(`#tagfbl a`).getAttribute("href");
-      }, `a[id="${screen}"]`);
+            : document.querySelector(`#tagfbl a`).getAttribute("href"),
+        `a[id="${screen}"]`
+      );
       await page.goto("http://desk.zol.com.cn" + hrefItems);
       await page.waitForSelector("body img", { visible: true });
       const hrefItem = await page.$eval("body img", el => el.src);
       arr[i].maxsrc = hrefItem;
-      details.push(arr[i])
+      details.push(arr[i]);
       setDetail(details);
-      console.log(details)
     }
     setPanding(`爬取完成。请稍后`);
     browser.close();
   };
   const handerchilden = async (title, href) => {
-    console.log(title, href);
+    console.log(title, href, screenSize);
     setModal(title);
     setPanding("正在从数据库拉取数据~~~");
     let res = await ipcasync("init-collect", href);
@@ -106,12 +107,13 @@ const App = () => {
       try {
         setPanding("数据库未查询到，正在拉取新数据~~~");
         let { width, height } = screenSize;
-        await getPages(href, `${width}x${height}`);
+        await getPages(href, `${width}x${height == 1400 ? 1440 : height}`);
       } catch (error) {
         message.info(`网络异常未能全部下载成功`);
         setDetail(details);
       }
       ipcasync("init-collect-add", { href, resultHref: details });
+      setdown(true);
     }
     setPanding(false);
   };
@@ -126,7 +128,7 @@ const App = () => {
     const filepath = showOpenDialogSync({
       properties: ["openDirectory", "createDirectory", "promptToCreate"],
     });
-    console.log(filepath)
+    console.log(filepath);
     setPath(filepath && filepath[0]);
   };
   const setWallpaper = async url => {
@@ -139,7 +141,6 @@ const App = () => {
       setPanding(false);
       message.info(`网络异常未能全部下载成功`);
     }
-
   };
   const newFind = async (str, name) => {
     try {
@@ -164,7 +165,7 @@ const App = () => {
           <Spin indicator={antIcon} tip={panding} size="large" />
         </div>
       )}
-      {result.length > 0 && (
+      {result.length > 0 ? (
         <Content
           {...{
             result,
@@ -181,8 +182,14 @@ const App = () => {
             opendevtool,
             deleteAll,
             newFind,
+            _init,
+            isdown,
           }}
         />
+      ) : (
+        <div className="loading">
+          <Spin indicator={antIcon} tip="请稍后" size="large" />
+        </div>
       )}
     </div>
   );

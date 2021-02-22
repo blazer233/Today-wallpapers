@@ -19,7 +19,10 @@ import {
   YoutubeFilled,
   SkinFilled,
   GiftFilled,
-  StarFilled, SendOutlined
+  StarFilled,
+  SendOutlined,
+  DownloadOutlined,
+  GlobalOutlined,
 } from "@ant-design/icons";
 const { Panel } = Collapse;
 export default ({
@@ -36,10 +39,13 @@ export default ({
   openExternal,
   opendevtool,
   deleteAll,
-  newFind
+  newFind,
+  _init,
+  isdown,
 }) => (
   <div>
     <div className="justify-content-center">
+      {console.log(result)}
       {result.map(({ srcmini, title, href }, index) => (
         <div className="mb-1 pics" key={title + index}>
           <div className="card" onClick={() => handerchilden(title, href)}>
@@ -58,8 +64,8 @@ export default ({
       visible={Modals}
       onCancel={() => setModal(false)}
       closable={false}
-      footer={
-        [<Button
+      footer={[
+        <Button
           key="back"
           onClick={() => {
             setModal(false);
@@ -67,9 +73,8 @@ export default ({
           }}
         >
           Return
-                </Button>
-        ]
-      }
+        </Button>,
+      ]}
       maskClosable={false}
       style={{ top: 30 }}
     >
@@ -109,10 +114,7 @@ export default ({
         className="CollapseControl"
       >
         <div className="typesIcon">
-          <MehFilled
-            onClick={() => newFind("dongman/", "动漫")}
-            title="动漫"
-          />
+          <MehFilled onClick={() => newFind("dongman/", "动漫")} title="动漫" />
           <BankFilled
             onClick={() => newFind("jianzhu/", "建筑")}
             title="建筑"
@@ -125,15 +127,9 @@ export default ({
             onClick={() => newFind("meinv/", "美女")}
             title="美女"
           />
-          <SkinFilled
-            onClick={() => newFind("jingwu/", "静物")}
-            title="静物"
-          />
+          <SkinFilled onClick={() => newFind("jingwu/", "静物")} title="静物" />
           <CarFilled onClick={() => newFind("qiche/", "汽车")} title="汽车" />
-          <GiftFilled
-            onClick={() => newFind("jieri/", "节日")}
-            title="节日"
-          />
+          <GiftFilled onClick={() => newFind("jieri/", "节日")} title="节日" />
           <StarFilled
             onClick={() => newFind("xingzuo/", "星座")}
             title="星座"
@@ -156,19 +152,23 @@ export default ({
 
     <div className="icons_fix">
       <BackTop>
-        <SendOutlined title="回到顶部" className='upicon' rotate={270} />
+        <SendOutlined title="回到顶部" className="upicon" rotate={270} />
       </BackTop>
-      {/* <div style={{ 'cursor': 'pointer' }} onClick={() => message.info(`当前一共${result.length}套壁纸`)}>
-        {result.length}</div> */}
-      <DeleteOutlined title="全部删除" onClick={() => {
-        Modal.error({
-          title: '是否删除数据库全部数据',
-          content: '删除后无法恢复只能重新下载',
-          onOk: deleteAll,
-          maskClosable: true,
-          okText: '确认'
-        })
-      }} />
+      <div
+        className="icons-num"
+        onClick={() => message.info(`当前一共${result.length}套壁纸`)}
+      >
+        {result.length}
+      </div>
+      <DownloadOutlined
+        onClick={() =>
+          result.some(({ children }) => children.length) || isdown
+            ? _init(true)
+            : message.info(`未下载壁纸`)
+        }
+        title="已下载集合"
+      />
+      <GlobalOutlined onClick={() => _init()} title="全部集合" />
       <CodeOutlined onClick={opendevtool} title="控制台" />
       {headless ? (
         <EyeInvisibleOutlined
@@ -176,15 +176,28 @@ export default ({
           title="显示爬虫"
         />
       ) : (
-          <EyeOutlined onClick={() => setheadless(true)} title="隐藏爬虫" />
-        )}
+        <EyeOutlined onClick={() => setheadless(true)} title="隐藏爬虫" />
+      )}
       <GithubOutlined
         onClick={() =>
-          openExternal("https://github.com/blazer233/Today-wallpaper/tree/react-store-puppeteer")
+          openExternal(
+            "https://github.com/blazer233/Today-wallpaper/tree/react-store-puppeteer"
+          )
         }
         title="访问github"
       />
+      <DeleteOutlined
+        title="全部删除"
+        onClick={() => {
+          Modal.error({
+            title: "是否删除数据库全部数据",
+            content: "删除后无法恢复只能重新下载",
+            onOk: deleteAll,
+            maskClosable: true,
+            okText: "确认",
+          });
+        }}
+      />
     </div>
-  </div >
+  </div>
 );
-
