@@ -45,7 +45,6 @@ export default ({
 }) => (
   <div>
     <div className="justify-content-center">
-      {console.log(result)}
       {result.map(({ srcmini, title, href }, index) => (
         <div className="mb-1 pics" key={title + index}>
           <div className="card" onClick={() => handerchilden(title, href)}>

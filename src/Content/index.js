@@ -115,7 +115,6 @@ const App = () => {
             : height < 1900 && height > 1600
             ? `2880x1800`
             : `${width}x${height}`;
-        console.log(screenSize, size);
         await getPages(href, size);
       } catch (error) {
         message.info(`网络异常未能全部下载成功`);
