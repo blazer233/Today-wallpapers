@@ -107,7 +107,16 @@ const App = () => {
       try {
         setPanding("数据库未查询到，正在拉取新数据~~~");
         let { width, height } = screenSize;
-        await getPages(href, `${width}x${height == 1400 ? 1440 : height}`);
+        let size =
+          height < 1100 && height > 1000
+            ? `1920x1080`
+            : height < 1600 && height > 1100
+            ? `2560x1440`
+            : height < 1900 && height > 1600
+            ? `2880x1800`
+            : `${width}x${height}`;
+        console.log(screenSize, size);
+        await getPages(href, size);
       } catch (error) {
         message.info(`网络异常未能全部下载成功`);
         setDetail(details);
