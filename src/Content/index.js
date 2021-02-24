@@ -3,24 +3,11 @@ import Content from "./Content";
 import { executablePath } from "../../package.json";
 import { SyncOutlined } from "@ant-design/icons";
 import { Spin, message } from "antd";
-const {
-  ipcRenderer,
-  shell: { openExternal },
-  remote: {
-    dialog: { showOpenDialogSync },
-  },
-} = window.require("electron");
-const wallpaper = window.require("wallpaper");
-const puppeteer = window.require("puppeteer");
-const ipcasync = async (name, obj = null) => {
-  ipcRenderer.send(name, obj);
-  return await new Promise(resolve => {
-    ipcRenderer.on(`${name}-reply`, (event, arg) => resolve(arg));
-  });
-};
+import { ipcasync, puppeteer, wallpaper, showOpenDialogSync } from "../utils";
 const App = () => {
   const [result, setResult] = useState([]);
   const [isdown, setdown] = useState(false);
+  const [isdownshow, setdownshow] = useState(false);
   const [details, setDetail] = useState([]);
   const [Modals, setModal] = useState("");
   const [screenSize, setScreenSize] = useState({});
@@ -164,6 +151,7 @@ const App = () => {
       setResult([]);
     }
     setPanding(false);
+    setdownshow(false);
   };
   const antIcon = <SyncOutlined spin style={{ fontSize: 24 }} />;
   return (
@@ -186,12 +174,13 @@ const App = () => {
             setModal,
             setheadless,
             headless,
-            openExternal,
             opendevtool,
             deleteAll,
             newFind,
             _init,
             isdown,
+            isdownshow,
+            setdownshow,
           }}
         />
       ) : (

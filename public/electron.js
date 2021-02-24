@@ -15,8 +15,8 @@ const {
   expHomePage,
   updatePage,
   expHomeOne,
-  destroyPage, 
-  expDown,
+  destroyPage,
+  expDown, 
 } = require("./Database");
 const dayjs = require("dayjs");
 const isDev = process.env.NODE_ENV !== "development";
@@ -27,8 +27,8 @@ const Hand = async () => {
     width: 900,
     height: 700,
     minHeight: 700,
-    minWidth: 900,
-    frame: true, //无边框
+    minWidth: 310,
+    frame: false, //无边框
     transparent: false, //透明
     alwaysOnTop: false,
     hasShadow: false, //阴影
@@ -40,10 +40,10 @@ const Hand = async () => {
       nodeIntegrationInSubFrames: true, //否允许在子页面(iframe)或子窗口(child window)中集成Node.js
     },
   });
-  isDev
+  isDev 
     ? mainWindow.loadURL(`file://${__dirname}\\index.html`)
     : mainWindow.loadURL(`http://localhost:3000`);
-  setApplicationMenu(buildFromTemplate([]));
+  setApplicationMenu(buildFromTemplate([])); 
   ipcMain.on("init-imgsize", e => {
     var { workAreaSize } = screen.getPrimaryDisplay();
     e.sender.send("init-imgsize-reply", workAreaSize);
@@ -74,9 +74,9 @@ const Hand = async () => {
   ipcMain.on("init-day-data", (e, { data }) => {
     let add = savHomePage(data);
     e.sender.send("init-day-data-reply", {
-      dataArry: expHomePage("title"), 
+      dataArry: expHomePage("title"),
       add,
-    }); 
+    });
   });
   ipcMain.on("init-collect", (e, href) => {
     console.log(href);
@@ -109,6 +109,12 @@ const Hand = async () => {
     }).show();
 
     event.sender.send("download-reply", dl.getSavePath());
+  });
+  ipcMain.on("max-icon", () => {
+    mainWindow.isMaximized() ? mainWindow.restore() : mainWindow.maximize();
+  });
+  ipcMain.on("mini-icon", () => {
+    mainWindow.minimize();
   });
   mainWindow.on("closed", () => {
     mainWindow = null;

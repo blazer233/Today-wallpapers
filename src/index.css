@@ -2,8 +2,8 @@
 
 .justify-content-center {
   display: flex;
-  width: 100vw;
   flex-wrap: wrap;
+  margin-left: 10px;
 }
 
 .gallery {
@@ -15,7 +15,7 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  right: 0.4rem;
+  left: 0.4rem;
   top: 60%;
   height: 33%;
   justify-content: space-between;
@@ -25,7 +25,7 @@
 .CollapseControl {
   position: fixed;
   right: -0.5%;
-  top: 1%;
+  top: 15%;
 }
 
 .ant-collapse-content-box {
@@ -41,10 +41,10 @@
 }
 
 .upicon {
-  position: fixed;
-  right: 0.45rem;
-  font-size: 20px;
-  top: 95%;
+  position: fixed !important;
+  right: 0rem !important;
+  font-size: 20px !important;
+  bottom: 0.5rem !important;
 }
 
 .txtIcons {
@@ -90,9 +90,9 @@ hr.style2 {
 
 .card {
   height: 160px;
-  width: 244px;
+  width: 237px;
   position: relative;
-  margin: 1.5rem;
+  margin: 1.6rem;
   border-radius: 0.3em;
   box-shadow: -7px 7px 12px rgba(255, 255, 255, 0.5),
     7px 7px 12px rgba(0, 0, 0, 0.3);
@@ -225,9 +225,41 @@ hr.style2 {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  height: 100vh;
 }
-
+.button-icons {
+  position: fixed;
+  font-size: 18px;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 999;
+  flex-direction: initial;
+  width: 100%;
+  background-color: RGB(200, 198, 198);
+  align-content: center;
+  height: 2rem;
+  align-items: center;
+}
+.drag-icons {
+  flex: 1;
+  -webkit-app-region: drag;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.button-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}
+.drop-down {
+  position: fixed;
+  bottom: 3rem;
+  right: 0.8rem;
+}
+.drop-downs {
+  width: 2rem;
+  position: fixed !important;
+  background: transparent !important;
+}
 #nav {
   padding: 30px;
 }
