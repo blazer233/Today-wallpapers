@@ -21,9 +21,9 @@ import {
   SkinFilled,
   GiftFilled,
   StarFilled,
-  SendOutlined,
   DownloadOutlined,
   GlobalOutlined,
+  RocketFilled,
 } from "@ant-design/icons";
 export default ({
   result,
@@ -187,7 +187,7 @@ export default ({
 
       <div className="icons_fix">
         <BackTop className="upicon">
-          <SendOutlined title="回到顶部" rotate={270} />
+          <RocketFilled title="回到顶部" />
         </BackTop>
         <div
           className="icons-num"

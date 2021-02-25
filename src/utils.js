@@ -1,10 +1,8 @@
-const { ipcRenderer } = window.require("electron");
 export const wallpaper = window.require("wallpaper");
 export const puppeteer = window.require("puppeteer");
 export const {
+  ipcRenderer,
   shell: { openExternal },
-} = window.require("electron");
-export const {
   remote: {
     dialog: { showOpenDialogSync },
   },

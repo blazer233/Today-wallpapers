@@ -226,6 +226,30 @@ hr.style2 {
   background-attachment: fixed;
   background-size: cover;
 }
+.button-icons-over {
+  bottom: 0px;
+  position: fixed;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  z-index: 999;
+  flex-direction: initial;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.5)
+  );
+  align-content: center;
+  height: 1rem;
+  align-items: center;
+}
+.glob {
+  width: 18px;
+  height: 18px;
+  background: #8bc34a;
+  border-radius: 100%;
+}
 .button-icons {
   position: fixed;
   font-size: 18px;

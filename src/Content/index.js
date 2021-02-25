@@ -20,6 +20,7 @@ const App = () => {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   };
   const _init = async (_ = false) => {
+    console.log(showOpenDialogSync, Notification);
     setPanding("努力加载中...第一次加载时间会比较长~~~");
     let res = await ipcasync("init-homepage", _);
     setScreenSize(await ipcasync("init-imgsize"));
@@ -105,10 +106,14 @@ const App = () => {
         await getPages(href, size);
       } catch (error) {
         message.info(`网络异常未能全部下载成功`);
+        setPanding(false);
         setDetail(details);
       }
       ipcasync("init-collect-add", { href, resultHref: details });
       setdown(true);
+      Notification.requestPermission(
+        () => new Notification("hi~", { body: `" ${title} "获取完成` })
+      );
     }
     setPanding(false);
   };
@@ -144,7 +149,7 @@ const App = () => {
       let { dataArry, add } = await ipcasync("init-day-data", {
         data,
       });
-      message.info(`本次新增 ${add} 张`);
+      message.info(add == 0 ? "本次无新增" : `本次新增 ${add} 张`);
       setResult(dataArry);
     } catch (error) {
       message.info(`加载失败`);

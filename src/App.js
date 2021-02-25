@@ -11,7 +11,7 @@ export default () => {
   return (
     <>
       <div className="button-icons">
-        <div className="drag-icons">🤖  每日壁纸</div>
+        <div className="drag-icons">🤖 每日壁纸</div>
         <div>
           <MinusSquareOutlined
             className="button-icon"
@@ -40,6 +40,7 @@ export default () => {
         </div>
       </div>
       <Content />
+      <div className="button-icons-over"> one wallpaper💎 </div>
     </>
   );
 };

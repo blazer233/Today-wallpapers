@@ -7,7 +7,7 @@ const {
   Menu: { buildFromTemplate, setApplicationMenu },
   screen,
 } = require("electron");
-
+const path = require("path");
 const { download } = require("electron-dl");
 const log = require("electron-log");
 const {
@@ -16,10 +16,11 @@ const {
   updatePage,
   expHomeOne,
   destroyPage,
-  expDown, 
+  expDown,
 } = require("./Database");
 const dayjs = require("dayjs");
 const isDev = process.env.NODE_ENV !== "development";
+var appTray;
 const Hand = async () => {
   //当electron完成初始化后触发init-day-data
   mainWindow = new BrowserWindow({
@@ -40,10 +41,10 @@ const Hand = async () => {
       nodeIntegrationInSubFrames: true, //否允许在子页面(iframe)或子窗口(child window)中集成Node.js
     },
   });
-  isDev 
+  isDev
     ? mainWindow.loadURL(`file://${__dirname}\\index.html`)
     : mainWindow.loadURL(`http://localhost:3000`);
-  setApplicationMenu(buildFromTemplate([])); 
+  setApplicationMenu(buildFromTemplate([]));
   ipcMain.on("init-imgsize", e => {
     var { workAreaSize } = screen.getPrimaryDisplay();
     e.sender.send("init-imgsize-reply", workAreaSize);
@@ -101,7 +102,7 @@ const Hand = async () => {
       openFolderWhenDone: false,
     });
     new Notification({
-      title: "hi~",
+      title: "hi~", 
       body: "您已设置新桌面",
       silent: true,
       icon: dl.getSavePath(),
@@ -115,6 +116,26 @@ const Hand = async () => {
   });
   ipcMain.on("mini-icon", () => {
     mainWindow.minimize();
+    mainWindow.hide();
+    if (!appTray) {
+      appTray = new Tray(path.join(__dirname, "favicon.ico"));
+      appTray.setToolTip("one wallpaper💎");
+      appTray.on("click", () =>
+        mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+      );
+      const contextMenu = buildFromTemplate([
+        // {
+        //   label: "显示/隐藏", //设置单个菜单项名称
+        //   click: () =>
+        //     mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show(),
+        // },
+        {
+          label: "退出",
+          click: () => app.quit(),
+        },
+      ]);
+      appTray.setContextMenu(contextMenu);
+    }
   });
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -124,7 +145,6 @@ const Hand = async () => {
     mainWindow.show();
   });
 };
-
 app.on("ready", () => {
   Hand();
 });
