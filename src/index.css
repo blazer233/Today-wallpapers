@@ -263,6 +263,13 @@ hr.style2 {
   height: 2rem;
   align-items: center;
 }
+.drop-downs-menu {
+  background-color: transparent !important;
+  -webkit-box-shadow: none !important;
+}
+.icons-li {
+  display: block;
+}
 .drag-icons {
   flex: 1;
   -webkit-app-region: drag;
@@ -280,7 +287,7 @@ hr.style2 {
   right: 0.8rem;
 }
 .drop-downs {
-  width: 2rem;
+  width: 2.2rem;
   position: fixed !important;
   background: transparent !important;
 }

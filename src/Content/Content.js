@@ -112,69 +112,80 @@ export default ({
         className="drop-down"
         placement="topCenter"
         overlay={() => (
-          <Menu>
+          <Menu className="drop-downs-menu">
             <Menu.Item>
               <MehFilled
+                className="icons-li"
                 onClick={() => newFind("dongman/", "动漫")}
                 title="动漫"
               />
             </Menu.Item>
             <Menu.Item>
               <BankFilled
+                className="icons-li"
                 onClick={() => newFind("jianzhu/", "建筑")}
                 title="建筑"
               />
             </Menu.Item>
             <Menu.Item>
               <GitlabFilled
+                className="icons-li"
                 onClick={() => newFind("dongwu/", "动物")}
                 title="动物"
               />
             </Menu.Item>
             <Menu.Item>
               <YoutubeFilled
+                className="icons-li"
                 onClick={() => newFind("meinv/", "美女")}
                 title="美女"
               />
             </Menu.Item>
             <Menu.Item>
               <SkinFilled
+                className="icons-li"
                 onClick={() => newFind("jingwu/", "静物")}
                 title="静物"
               />
             </Menu.Item>
             <Menu.Item>
               <CarFilled
+                className="icons-li"
                 onClick={() => newFind("qiche/", "汽车")}
                 title="汽车"
               />
             </Menu.Item>
             <Menu.Item>
               <GiftFilled
+                className="icons-li"
                 onClick={() => newFind("jieri/", "节日")}
                 title="节日"
               />
             </Menu.Item>
             <Menu.Item>
               <DribbbleCircleFilled
+                className="icons-li"
                 onClick={() => newFind("tiyu/", "体育")}
                 title="体育"
               />
             </Menu.Item>
             <Menu.Item>
               <AlertFilled
+                className="icons-li"
                 onClick={() => newFind("chuangyi/", "创意")}
                 title="创意"
               />
             </Menu.Item>
             <Menu.Item>
               <FileImageFilled
+                className="icons-li"
                 onClick={() => newFind("fengjing/", "风景")}
                 title="风景"
               />
             </Menu.Item>
             <Menu.Item>
               <StarFilled
+                className="icons-li"
                 onClick={() => newFind("xingzuo/", "星座")}
                 title="星座"
               />

@@ -50,7 +50,7 @@ const Hand = async () => {
     e.sender.send("init-imgsize-reply", workAreaSize);
   });
   ipcMain.on("init-devtool", e =>
-    mainWindow.webContents.openDevTools({ mode: "detach" })
+    mainWindow.webContents.toggleDevTools({ mode: "detach" })
   );
   ipcMain.on("init-delete", e => {
     destroyPage();
@@ -102,7 +102,7 @@ const Hand = async () => {
       openFolderWhenDone: false,
     });
     new Notification({
-      title: "hi~", 
+      title: "hi~",
       body: "您已设置新桌面",
       silent: true,
       icon: dl.getSavePath(),
