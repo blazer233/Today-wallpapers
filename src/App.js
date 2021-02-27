@@ -21,7 +21,7 @@ export default () => {
             onClick={() => ipcasync("mini-icon")}
           />
           {max ? (
-            <ShrinkOutlined
+            <ArrowsAltOutlined
               className="button-icon"
               title="最大化"
               onClick={() => {
@@ -30,7 +30,7 @@ export default () => {
               }}
             />
           ) : (
-            <ArrowsAltOutlined
+            <ShrinkOutlined
               className="button-icon"
               title="恢复大小"
               onClick={() => {
