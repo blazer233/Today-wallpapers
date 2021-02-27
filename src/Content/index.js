@@ -4,26 +4,27 @@ import { executablePath } from "../../package.json";
 import { SyncOutlined } from "@ant-design/icons";
 import { Spin, message } from "antd";
 import { ipcasync, puppeteer, wallpaper, showOpenDialogSync } from "../utils";
-const App = () => {
+const App = ({ getTitle }) => {
   const [result, setResult] = useState([]);
   const [isdown, setdown] = useState(false);
   const [isdownshow, setdownshow] = useState(false);
   const [details, setDetail] = useState([]);
-  const [Modals, setModal] = useState("");
+  const [Modals, setModal] = useState({});
   const [screenSize, setScreenSize] = useState({});
   const [path, setPath] = useState("");
   const [headless, setheadless] = useState(true);
-  const [panding, setPanding] = useState("");
+  const [panding, setPanding] = useState("请稍后");
   const config = {
     headless,
     executablePath,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   };
   const _init = async (_ = false) => {
-    console.log(showOpenDialogSync, Notification);
     setPanding("努力加载中...第一次加载时间会比较长~~~");
     let res = await ipcasync("init-homepage", _);
     setScreenSize(await ipcasync("init-imgsize"));
+    _ ? getTitle("🏠") : getTitle("🌎");
+    _ ? setdownshow(true) : setdownshow(false);
     res ? setResult(res) : newFind();
     setPanding(false);
   };
@@ -86,7 +87,7 @@ const App = () => {
   };
   const handerchilden = async (title, href) => {
     console.log(title, href, screenSize);
-    setModal(title);
+    setModal({ title, href });
     setPanding("正在从数据库拉取数据~~~");
     let res = await ipcasync("init-collect", href);
     if (res) {
@@ -142,6 +143,23 @@ const App = () => {
       message.info(`网络异常未能全部下载成功`);
     }
   };
+  const likehander = async (src, name, taghref) => {
+    message.info(name == "set-like" ? "添加喜欢" : "取消喜欢");
+    let res = await ipcasync(name, {
+      src,
+      href: taghref ? taghref : Modals.href,
+    });
+    taghref ? openlike(true) : setDetail(res);
+  };
+  const openlike = async _is => {
+    let res = await ipcasync("init-like");
+    if (res.length) {
+      getTitle("💖");
+    } else {
+      message.info(`暂时没有收藏壁纸`);
+    }
+    setResult(res);
+  };
   const newFind = async (str, name) => {
     try {
       setPanding(`正在添加${name}壁纸`);
@@ -166,33 +184,28 @@ const App = () => {
           <Spin indicator={antIcon} tip={panding} size="large" />
         </div>
       )}
-      {result.length > 0 ? (
-        <Content
-          {...{
-            result,
-            saveWallpaper,
-            setWallpaper,
-            handerchilden,
-            details,
-            setDetail,
-            Modals,
-            setModal,
-            setheadless,
-            headless,
-            opendevtool,
-            deleteAll,
-            newFind,
-            _init,
-            isdown,
-            isdownshow,
-            setdownshow,
-          }}
-        />
-      ) : (
-        <div className="loading">
-          <Spin indicator={antIcon} tip="请稍后" size="large" />
-        </div>
-      )}
+      <Content
+        {...{
+          result,
+          saveWallpaper,
+          setWallpaper,
+          handerchilden,
+          details,
+          setDetail,
+          Modals,
+          setModal,
+          setheadless,
+          headless,
+          opendevtool,
+          deleteAll,
+          newFind,
+          _init,
+          isdown,
+          isdownshow,
+          likehander,
+          openlike,
+        }}
+      />
     </div>
   );
 };

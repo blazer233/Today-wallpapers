@@ -2,8 +2,8 @@ const {
   app,
   ipcMain,
   BrowserWindow,
-  Notification,
-  Tray,
+  Notification, 
+  Tray, 
   Menu: { buildFromTemplate, setApplicationMenu },
   screen,
 } = require("electron");
@@ -17,6 +17,7 @@ const {
   expHomeOne,
   destroyPage,
   expDown,
+  explikes,
 } = require("./Database");
 const dayjs = require("dayjs");
 const isDev = process.env.NODE_ENV !== "development";
@@ -50,7 +51,7 @@ const Hand = async () => {
     e.sender.send("init-imgsize-reply", workAreaSize);
   });
   ipcMain.on("init-devtool", e =>
-    mainWindow.webContents.toggleDevTools({ mode: "detach" })
+    mainWindow.webContents.openDevTools({ mode: "detach" })
   );
   ipcMain.on("init-delete", e => {
     destroyPage();
@@ -80,19 +81,25 @@ const Hand = async () => {
     });
   });
   ipcMain.on("init-collect", (e, href) => {
-    console.log(href);
     let result = expHomeOne(href);
-    if (result.children.length) {
-      console.log(result.children.length, "子壁纸个数");
-      e.sender.send("init-collect-reply", result.children);
-    } else {
-      e.sender.send("init-collect-reply", false);
-    }
-  });
+    result.children.length
+      ? e.sender.send("init-collect-reply", result.children)
+      : e.sender.send("init-collect-reply", false);
+  });  
   ipcMain.on("init-collect-add", (e, { href, resultHref }) => {
-    console.log(`${href}下添加子壁纸${resultHref.length}张`);
-    updatePage(href, resultHref);
+    updatePage(href, false, resultHref);
     e.sender.send("init-day-data-reply", true);
+  });
+  ipcMain.on("set-like", (e, { src, href }) => {
+    updatePage(href, true, src);
+    e.sender.send("set-like-reply", expHomeOne(href).children);
+  });
+  ipcMain.on("set-dislike", (e, { src, href }) => {
+    updatePage(href, true, src);
+    e.sender.send("set-dislike-reply", expHomeOne(href).children);
+  });
+  ipcMain.on("init-like", e => {
+    e.sender.send("init-like-reply", explikes());
   });
   ipcMain.on("download", async (event, { url, path }) => {
     const defaultPath = app.getPath("downloads");

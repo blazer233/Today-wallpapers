@@ -24,6 +24,8 @@ import {
   DownloadOutlined,
   GlobalOutlined,
   RocketFilled,
+  HeartOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 export default ({
   result,
@@ -31,7 +33,7 @@ export default ({
   setWallpaper,
   handerchilden,
   details,
-  Modals,
+  Modals: { title },
   setModal,
   setDetail,
   setheadless,
@@ -42,27 +44,50 @@ export default ({
   _init,
   isdown,
   isdownshow,
-  setdownshow,
+  likehander,
+  openlike,
 }) => {
   return (
     <div>
       <div className="justify-content-center">
-        {result.map(({ srcmini, title, href }, index) => (
+        {result.map(({ srcmini, title, href, like, maxsrc: src }, index) => (
           <div className="mb-1 pics" key={title + index}>
-            <div className="card" onClick={() => handerchilden(title, href)}>
-              <img src={srcmini} />
-              <div className="content-overlay"></div>
-              <div className="content">
-                <p>{title}</p>
-              </div>
+            <div
+              className="card"
+              onClick={() => !like && handerchilden(title, href)}
+            >
+              {like ? (
+                <>
+                  <Image src={srcmini} preview={{ src }} className="like-img" />
+                  <div className="like-title">
+                    <span className="txtIcons len">{title}</span>
+                    <HeartFilled
+                      title="取消喜欢"
+                      onClick={() => likehander(src, "set-dislike", href)}
+                    />
+                    <FormatPainterFilled
+                      onClick={() => setWallpaper(src)}
+                      title="设置壁纸"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <img src={srcmini} />
+                  <div className="content-overlay"></div>
+                  <div className="content">
+                    <p>{title}</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         ))}
       </div>
       <Modal
-        title={Modals}
+        title={title}
         width="550"
-        visible={Modals}
+        visible={title}
         onCancel={() => setModal(false)}
         closable={false}
         footer={[
@@ -80,26 +105,35 @@ export default ({
         style={{ top: 30 }}
       >
         <div className="Modalcon">
-          {details.map(({ maxsrc, srcmini }, index) => (
+          {details.map(({ maxsrc: src, srcmini, like = false }, index) => (
             <div key={index}>
               <Image
                 width={200}
                 height={129}
                 src={srcmini}
                 className="Modalimage"
-                preview={{
-                  src: maxsrc,
-                }}
+                preview={{ src }}
               />
               <div className="icons">
                 <div className="txtIcons">
-                  {maxsrc.split("t_s")[1]
-                    ? maxsrc.split("t_s")[1].split("c5")[0]
-                    : maxsrc.split("/")[7]}
+                  {src.split("t_s")[1]
+                    ? src.split("t_s")[1].split("c5")[0]
+                    : src.split("/")[7]}
                 </div>
+                {like ? (
+                  <HeartFilled
+                    title="取消喜欢"
+                    onClick={() => likehander(src, "set-dislike")}
+                  />
+                ) : (
+                  <HeartOutlined
+                    title="喜欢"
+                    onClick={() => likehander(src, "set-like")}
+                  />
+                )}
                 <FolderOpenFilled onClick={saveWallpaper} title="下载图片" />
                 <FormatPainterFilled
-                  onClick={() => setWallpaper(maxsrc)}
+                  onClick={() => setWallpaper(src)}
                   title="设置壁纸"
                 />
               </div>
@@ -207,25 +241,14 @@ export default ({
           {result.length}
         </div>
         {isdownshow ? (
-          <GlobalOutlined
-            onClick={() => {
-              setdownshow(false);
-              _init();
-            }}
-            title="查看全部集合"
-          />
+          <GlobalOutlined onClick={() => _init()} title="查看全部集合" />
         ) : (
           <DownloadOutlined
-            onClick={() => {
-              setdownshow(true);
-              result.some(({ children }) => children.length) || isdown
-                ? _init(true)
-                : message.info(`未下载壁纸`);
-            }}
+            onClick={() => _init(true)}
             title="查看已下载集合"
           />
         )}
-
+        <HeartOutlined onClick={openlike} title="喜欢" />
         <CodeOutlined onClick={opendevtool} title="控制台" />
         {headless ? (
           <EyeInvisibleOutlined

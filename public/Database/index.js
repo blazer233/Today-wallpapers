@@ -19,15 +19,33 @@ const savHomePage = arr => {
 };
 const expHomePage = str =>
   str ? store.get("Database").filter(i => i[str]) : store.get("Database");
-const expHomeOne = (str, num) =>
-  num
+const expHomeOne = (str, istime) =>
+  istime
     ? store.get("Database").find(i => i[str])
     : store.get("Database").find(i => i.href == str);
-const updatePage = (atr, data) => {
+const updatePage = (atr, islike, data) => {
   let res = store.get("Database");
   let result = res.find(i => i.href == atr);
-  result.children = data;
+  if (islike) {
+    result.children.forEach(i => {
+      if (i.maxsrc == data) i.like = !i.like;
+    });
+  } else {
+    result.children = data;
+  }
   store.set("Database", res);
+};
+
+const explikes = () => {
+  let res = expDown();
+  let target = [];
+  res.forEach(({ children, title, href }) =>
+    children.forEach(
+      (i, index) =>
+        i.like && target.push({ ...i, title: `${title}-${index + 1}`, href })
+    )
+  );
+  return target;
 };
 const expDown = () =>
   expHomePage("title").filter(({ children }) => children.length);
@@ -38,4 +56,5 @@ module.exports = {
   updatePage,
   expHomeOne,
   expDown,
+  explikes,
 };

@@ -48,10 +48,6 @@
 }
 
 .txtIcons {
-  margin-right: 4rem;
-  position: relative;
-  top: -0.5rem;
-  left: 1rem;
   opacity: 0.5;
 }
 
@@ -65,6 +61,12 @@
 
 body {
   margin: 0px;
+  background: linear-gradient(
+    180deg,
+    rgba(200, 198, 198, 1) 0%,
+    rgba(236, 236, 236, 1) 33%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
 ul {
@@ -101,21 +103,34 @@ hr.style2 {
 hr.style2 {
   opacity: 0;
 }
-
+.like-title {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0.3rem;
+}
+.len {
+  width: 80%;
+}
 .card:hover {
   filter: grayscale(80%);
   cursor: zoom-in;
   box-shadow: -7px 7px 12px rgba(255, 255, 255, 0.3),
     7px 7px 12px rgba(0, 0, 0, 0.3);
 }
-
+.like-img {
+  height: 160px !important;
+  width: 237px !important;
+}
 .icons {
+  width: 95%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
 }
 
 .icons > span {
-  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card .content-overlay {
