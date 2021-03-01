@@ -81,10 +81,9 @@ yarn add concurrently cross-env -S //安装到开发环境
 
   ```
 
-![image-1](https://pic2.zhimg.com/80/v2-0f66348b64acbd3c150fbfb7882344a1_720w.jpg)
 此时我们可以运行`yarn start` 将之前的`react`起始页通过桌面程序的方式打开，也可以通过执行`yarn build` 将我们的桌面程序打包生成`.exe`文件进行安装 over。
 
-![image-1](electron.png)
+![image-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/electron.png)
 
 ### electron-react 每日壁纸 🧠
 
@@ -145,9 +144,9 @@ store.delete("test"); //删除
 
 需求界面 UI 简洁，所以通过 electron 中的 `ipcMain` 和 `ipcRenderer `通信模块结合前端`antd/icons`设置应用的最小化按钮、全屏按钮、恢复按钮，当点击最小化时，界面隐藏置系统托盘，托盘点击控制界面出现和隐藏，托盘图标右键进行关闭
 
-![image-1](_dev.png)
+![image-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/_dev.png)
 👇👇👇👇👇 更改为
-![image-1](dev.png)
+![image-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/dev.png)
 
 ```javascript
 const {
@@ -311,7 +310,7 @@ const getPages = async (url, screen) => {
 - 壁纸下载 ✔
 - 每日更新 ✔
 - 动态壁纸 ✖（真不知道怎么搞，来个大佬指导一下）
-  ![image-1](over.png)
+  ![image-1](http://a1.qpic.cn/psc?/V11kzb9N1IWbdY/05RlWl8gsTOH*Z17MtCBzEBWJpxlgHQsUUWI1Q.SFfgS9d8ubUtKWGdEL*OteH2MADXy4XjR366ak5FHUCeM2Q!!/b&ek=1&kp=1&pt=0&bo=QAZkA0AGZAMRADc!&tl=1&tm=1614600000&sce=0-12-12&rf=viewer_311)
 
 #### :four:-wallpaper 总结
 
