@@ -58,7 +58,12 @@
 * {
   font-family: "Quicksand";
 }
-
+.show-day {
+  position: fixed;
+  left: 0.4rem;
+  top: 5%;
+  font-size: 20px;
+}
 body {
   margin: 0px;
   background: linear-gradient(

@@ -21,11 +21,11 @@ const App = ({ getTitle }) => {
   };
   const _init = async (_ = false) => {
     setPanding("努力加载中...第一次加载时间会比较长~~~");
-    let res = await ipcasync("init-homepage", _);
-    setScreenSize(await ipcasync("init-imgsize"));
+    let { result, workAreaSize } = await ipcasync("init-homepage", _);
+    setScreenSize(workAreaSize);
     _ ? getTitle("🏠") : getTitle("🌎");
     _ ? setdownshow(true) : setdownshow(false);
-    res ? setResult(res) : newFind();
+    result ? setResult(result) : newFind();
     setPanding(false);
   };
   useEffect(() => _init(), []);
@@ -151,13 +151,14 @@ const App = ({ getTitle }) => {
     });
     taghref ? openlike(true) : setDetail(res);
   };
-  const openlike = async _is => {
+  const openlike = async () => {
     let res = await ipcasync("init-like");
     if (res.length) {
       getTitle("💖");
     } else {
       message.info(`暂时没有收藏壁纸`);
     }
+    console.log(res)
     setResult(res);
   };
   const newFind = async (str, name) => {

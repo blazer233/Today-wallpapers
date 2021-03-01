@@ -2,8 +2,8 @@ const {
   app,
   ipcMain,
   BrowserWindow,
-  Notification, 
-  Tray, 
+  Notification,
+  Tray,
   Menu: { buildFromTemplate, setApplicationMenu },
   screen,
 } = require("electron");
@@ -46,10 +46,6 @@ const Hand = async () => {
     ? mainWindow.loadURL(`file://${__dirname}\\index.html`)
     : mainWindow.loadURL(`http://localhost:3000`);
   setApplicationMenu(buildFromTemplate([]));
-  ipcMain.on("init-imgsize", e => {
-    var { workAreaSize } = screen.getPrimaryDisplay();
-    e.sender.send("init-imgsize-reply", workAreaSize);
-  });
   ipcMain.on("init-devtool", e =>
     mainWindow.webContents.openDevTools({ mode: "detach" })
   );
@@ -58,20 +54,17 @@ const Hand = async () => {
     e.sender.send("init-delete-reply", true);
   });
   ipcMain.on("init-homepage", (e, _) => {
+    var { workAreaSize } = screen.getPrimaryDisplay();
     let ctx = expHomePage() || [];
+    let result = false;
     if (ctx.length) {
       log.info("查询到数据库数据");
       let { time } = expHomeOne("time", true);
       let isday = dayjs().isSame(time, "day");
       log.info(time, "数据库时间", isday, "同一天");
-      e.sender.send(
-        "init-homepage-reply",
-        isday && _ ? expDown() : isday ? expHomePage("title") : false
-      );
-    } else {
-      log.info("未查到数据库数据");
-      e.sender.send("init-homepage-reply", false);
+      result = isday && _ ? expDown() : isday ? expHomePage("title") : false;
     }
+    e.sender.send("init-homepage-reply", { result, workAreaSize });
   });
   ipcMain.on("init-day-data", (e, { data }) => {
     let add = savHomePage(data);
@@ -85,7 +78,7 @@ const Hand = async () => {
     result.children.length
       ? e.sender.send("init-collect-reply", result.children)
       : e.sender.send("init-collect-reply", false);
-  });  
+  });
   ipcMain.on("init-collect-add", (e, { href, resultHref }) => {
     updatePage(href, false, resultHref);
     e.sender.send("init-day-data-reply", true);
@@ -104,19 +97,23 @@ const Hand = async () => {
   ipcMain.on("download", async (event, { url, path }) => {
     const defaultPath = app.getPath("downloads");
     const currentPath = path ? path : defaultPath;
-    let dl = await download(BrowserWindow.getFocusedWindow(), url, {
-      directory: currentPath,
-      openFolderWhenDone: false,
-    });
-    new Notification({
-      title: "hi~",
-      body: "您已设置新桌面",
-      silent: true,
-      icon: dl.getSavePath(),
-      timeoutType: "default",
-    }).show();
-
-    event.sender.send("download-reply", dl.getSavePath());
+    try {
+      let dl = await download(BrowserWindow.getFocusedWindow(), url, {
+        directory: currentPath,
+        openFolderWhenDone: false,
+      });
+      log.info(url, path);
+      new Notification({
+        title: "hi~",
+        body: "您已设置新桌面",
+        silent: true,
+        icon: dl.getSavePath(),
+        timeoutType: "default",
+      }).show();
+      event.sender.send("download-reply", dl.getSavePath());
+    } catch (error) {
+      console.log(error);
+    }
   });
   ipcMain.on("max-icon", () => {
     mainWindow.isMaximized() ? mainWindow.restore() : mainWindow.maximize();
