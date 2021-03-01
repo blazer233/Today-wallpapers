@@ -16,7 +16,7 @@ export default () => {
   const getTitle = res => setTitle(res);
   useEffect(() => {
     message.info(day ? `您已开启每日壁纸` : "关闭每日壁纸");
-    day && setSchedule();
+    setSchedule(day);
   }, [day]);
   return (
     <>

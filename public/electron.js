@@ -98,11 +98,11 @@ const Hand = async () => {
     const defaultPath = app.getPath("downloads");
     const currentPath = path ? path : defaultPath;
     try {
-      let dl = await download(BrowserWindow.getFocusedWindow(), url, {
+      let dl = await download(BrowserWindow.getAllWindows()[0], url, {
         directory: currentPath,
         openFolderWhenDone: false,
       });
-      log.info(url, path);
+      log.info(url, path, dl.getSavePath());
       new Notification({
         title: "hi~",
         body: "您已设置新桌面",

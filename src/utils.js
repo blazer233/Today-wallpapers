@@ -14,10 +14,11 @@ export const ipcasync = async (name, obj = null) => {
     ipcRenderer.on(`${name}-reply`, (event, arg) => resolve(arg));
   });
 };
-export const setSchedule = () => {
-  schedule.scheduleJob("* 1 * * * *", async () => {
+export const setSchedule = _is => {
+  console.log(_is);
+  let current = schedule.scheduleJob("30 1 * * * *", async () => {
     let waps = await ipcasync("init-like");
-    if (waps.length) {
+    if (waps.length && _is) {
       let url = waps[Math.floor(Math.random() * waps.length)].maxsrc;
       try {
         let res = await ipcasync("download", { url, path: "" });
@@ -27,4 +28,5 @@ export const setSchedule = () => {
       }
     }
   });
+  !_is && current.cancel();
 };
