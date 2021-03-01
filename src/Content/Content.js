@@ -42,7 +42,6 @@ export default ({
   deleteAll,
   newFind,
   _init,
-  isdown,
   isdownshow,
   likehander,
   openlike,
