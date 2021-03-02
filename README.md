@@ -1,19 +1,19 @@
-# 基于 react 的 electron 开发及结合爬虫的应用实践 :snowboarder:
+# 基于 react + electron 开发及结合爬虫的应用实践🎅
 
-## 前言:memo:
+## 前言📝
 
-> :point_right:Electron 是一个可以使用 Web 技术如 JavaScript、HTML 和 CSS 来创建跨平台原生桌面应用的框架。借助 Electron，我们可以使用纯 JavaScript 来调用丰富的原生 APIs。 :point_left:
+> 👉 Electron 是一个可以使用 Web 技术如 JavaScript、HTML 和 CSS 来创建跨平台原生桌面应用的框架。借助 Electron，我们可以使用纯 JavaScript 来调用丰富的原生 APIs。 👈
 
 ![image-1](https://pic2.zhimg.com/80/v2-0f66348b64acbd3c150fbfb7882344a1_720w.jpg)
 
 ### 一个 electron-react 栗子 🤖
 
-#### :one:-Demo 安装 react 脚手架
+#### 1️⃣-Demo 安装 react 脚手架
 
 - 终端执行命令`npx create-react-app react-electron`自动进行配置安装
 - 进入`react-electron`目录下执行`yarn start`，项目自动运行在 3000 端口
 
-#### :two:-Demo 配置 electron 主进程
+#### 2️⃣-Demo 配置 electron 主进程
 
 - 因为`public`文件夹不会被`webpack`打包处理，会直接复制一份到`dist`目录下，所以在`public`中新建`electron.js`作为主进程
 - 在主进程中只需要从 electron 包中结构出 app, BrowserWindow,并监听 app 的'ready'事件，使用 BrowserWindow 生成实例对象，从而判断环境进行加载静态文件 or 端口
@@ -29,7 +29,7 @@ app.on("ready", () => {
 });
 ```
 
-#### :three:-Demo 配置 react-cli
+#### 3️⃣-Demo 配置 react-cli
 
 需要引入的库
 
@@ -83,13 +83,13 @@ yarn add concurrently cross-env -S //安装到开发环境
 
 此时我们可以运行`yarn start` 将之前的`react`起始页通过桌面程序的方式打开，也可以通过执行`yarn build` 将我们的桌面程序打包生成`.exe`文件进行安装 over。
 
-![image-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/electron.png)
+![demo-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/electron.png)
 
 ### electron-react 每日壁纸 🧠
 
 > 既然我们可以利用 `react `&`electron ` 构建桌面应用，就可以利用众多 npm 包去实现一个能用在生活中可以用到的功能，前段时间由于兴趣使然，接触 node 爬虫比较多，所以我想结合 `puppeteer`实现每日壁纸的桌面应用
 
-#### :one:-wallpaper 明确需求
+#### 1️⃣-wallpaper 明确需求
 
 - 壁纸进行分类获取，所有主题的壁纸通过合集的方式保存
 - 每天的壁纸按时更新，更新过的壁纸会保存到数据库中
@@ -98,7 +98,7 @@ yarn add concurrently cross-env -S //安装到开发环境
 - 在收藏的壁纸中可以开启是否进行每天自动设置当前壁纸
 - 风格简约，自适应布局
 
-#### :two:-wallpaper 功能实现
+#### 2️⃣-wallpaper 功能实现
 
 ##### 1、electron 部分
 
@@ -144,9 +144,9 @@ store.delete("test"); //删除
 
 需求界面 UI 简洁，所以通过 electron 中的 `ipcMain` 和 `ipcRenderer `通信模块结合前端`antd/icons`设置应用的最小化按钮、全屏按钮、恢复按钮，当点击最小化时，界面隐藏置系统托盘，托盘点击控制界面出现和隐藏，托盘图标右键进行关闭
 
-![image-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/_dev.png)
+![title-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/_dev.png)
 👇👇👇👇👇 更改为
-![image-1](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/dev.png)
+![title-2](https://raw.githubusercontent.com/blazer233/Today-wallpapers/master/public/dev.png)
 
 ```javascript
 const {
@@ -297,11 +297,11 @@ const getPages = async (url, screen) => {
     arr[i].maxsrc = hrefItem;
   }
   browser.close();
-  return details;
+  return arr;
 };
 ```
 
-#### :three:-wallpaper 展示
+#### 3️⃣-wallpaper 展示
 
 功能展示
 
@@ -310,12 +310,13 @@ const getPages = async (url, screen) => {
 - 壁纸下载 ✔
 - 每日更新 ✔
 - 动态壁纸 ✖（真不知道怎么搞，来个大佬指导一下）
-  ![image-1](http://a1.qpic.cn/psc?/V11kzb9N1IWbdY/05RlWl8gsTOH*Z17MtCBzEBWJpxlgHQsUUWI1Q.SFfgS9d8ubUtKWGdEL*OteH2MADXy4XjR366ak5FHUCeM2Q!!/b&ek=1&kp=1&pt=0&bo=QAZkA0AGZAMRADc!&tl=1&tm=1614600000&sce=0-12-12&rf=viewer_311)
+  ![功能展示](http://a1.qpic.cn/psc?/V11kzb9N1IWbdY/05RlWl8gsTOH*Z17MtCBzEBWJpxlgHQsUUWI1Q.SFfgS9d8ubUtKWGdEL*OteH2MADXy4XjR366ak5FHUCeM2Q!!/b&ek=1&kp=1&pt=0&bo=QAZkA0AGZAMRADc!&tl=1&tm=1614600000&sce=0-12-12&rf=viewer_311)
 
-#### :four:-wallpaper 总结
+#### 4️⃣-wallpaper 总结
 
 至此，谢谢各位在百忙之中点开这篇文章，希望对你们能有所帮助，相信你对 electron 结合 react 开发以及有了大概的认实，总的来说优化的点还有很多，比如 webpack 的打包配置、爬虫、等等...此项目为了大家能更熟练上手在上手 electron+react 的业务需求，如有问题欢迎各位大佬指正。
 
-github 地址 🍑：https://github.com/blazer233/Today-wallpapers
+- 👋：[跳转github](https://github.com/blazer233/Today-wallpapers)
+- 🍑：将 package 文件中的 executablePath 更改为自己谷歌浏览器的目标路径
 
-求个 stat，谢谢大家了
+求个 star，谢谢大家了
