@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Content from "./Content";
 import { executablePath } from "../../package.json";
 import { SyncOutlined } from "@ant-design/icons";
@@ -158,10 +158,10 @@ const App = ({ getTitle }) => {
     } else {
       message.info(`暂时没有收藏壁纸`);
     }
-    console.log(res)
+    console.log(res);
     setResult(res);
   };
-  const newFind = async (str, name) => {
+  const newFind = useCallback(async (str, name) => {
     try {
       setPanding(`正在添加${name}壁纸`);
       let data = await getHomePage(str ? str : "pc/");
@@ -176,7 +176,7 @@ const App = ({ getTitle }) => {
     }
     setPanding(false);
     setdownshow(false);
-  };
+  }, []);
   const antIcon = <SyncOutlined spin style={{ fontSize: 24 }} />;
   return (
     <div id="app">
